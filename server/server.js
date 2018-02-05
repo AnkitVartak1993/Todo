@@ -56,12 +56,12 @@ app.delete('/todos/:id',(req,res)=>{
 
 app.patch('/todos/:id',(req,res)=>{
     var id = req.params.id;
-    console.log(id);
     var body = _.pick(req.body,['text','completed']);
+
     if(!ObjectID.isValid(id)){
            return res.status(404).send();
         }
-        console.log(_.isBoolean(body.completed),body.completed )
+
     if(_.isBoolean(body.completed) && body.completed){
         body.completedAt = new Date().getTime();
     }
@@ -79,6 +79,20 @@ app.patch('/todos/:id',(req,res)=>{
     });
 });
 
+app.post('/users/',(req,res)=>{
+    var body = _.pick(req.body,['email','password']);
+    var user = new User(body);
+
+    user.save().then(()=>{
+        return user.generateAuthToken();
+        //res.send(user);
+    }).then((token)=>{
+        res.header('x-auth', token).send(user);
+    }).catch((e)=>{
+        res.status(400).send(e);
+    });
+
+})
 app.listen(port,(err,success)=>{
     if (err)
     return console.log(err);
