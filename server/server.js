@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
+const {authenticate} = require('./middleware/authenticate.js');
 
 var {User} =  require('./model/User.js');
 var {Todo} = require('./model/Todo.js');
@@ -92,7 +93,12 @@ app.post('/users/',(req,res)=>{
         res.status(400).send(e);
     });
 
-})
+});
+
+app.get('/users/me/', authenticate ,(req,res)=>{
+    res.send(req.user);
+});
+
 app.listen(port,(err,success)=>{
     if (err)
     return console.log(err);
