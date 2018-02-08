@@ -107,8 +107,17 @@ app.post('/users/login',(req, res) =>{
         });
     }).catch((e)=>{
         res.status(400).send(e);
-    })
-})
+    });
+});
+
+app.delete('/users/me/token', authenticate , (req,res)=>{
+    req.user.removeToken(req.token).then(()=>{
+       
+        res.status(200).send();
+    },()=>{res.status(400).send();})
+});
+
+
 app.listen(port,(err,success)=>{
     if (err)
     return console.log(err);

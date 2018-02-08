@@ -88,6 +88,17 @@ UserSchema.statics.findByCredentials = function(email, password){
         });
     })
 }
+
+UserSchema.methods.removeToken = function(token){
+    var user = this;
+      return user.update({
+            $pull :{
+                tokens : { token }
+          }
+      });
+      
+    };
+
 //Add hashing before saving password in DB
 UserSchema.pre('save', function(next){
     var user = this;
