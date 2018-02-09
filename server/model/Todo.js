@@ -1,6 +1,10 @@
 var mongoose = require('mongoose');
 
 var Todo = mongoose.model('Todo',{
+    creator:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true
+    },
     text:{
         type:String,
         required: true,

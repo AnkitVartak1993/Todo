@@ -11,18 +11,18 @@ const port = process.env.PORT || 3000;
 
 var app = express();
 app.use(bodyParser.json());
-app.post('/todos', (req,res)=>{
-    console.log(req.body);
+app.post('/todos', authenticate, (req,res)=>{
     var todo = new Todo({
-        text: req.body.text
+        text: req.body.text,
+        creator: req.user._id
     });
     todo.save().then((doc)=>{
         res.send(doc);
     },(err)=>{res.status(400).send(err);});
 });
 
-app.get('/todos', (req,res)=>{
-    Todo.find().then((result)=>{
+app.get('/todos',authenticate, (req,res)=>{
+    Todo.find({creator: req.user._id}).then((result)=>{
         res.send({result});
     },(err)=>{
         res.status(400).send(err);
