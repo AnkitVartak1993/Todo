@@ -1,3 +1,5 @@
+
+require('./config');
 var {mongoose} = require('./db/mongoose.js');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -5,9 +7,11 @@ const {ObjectID} = require('mongodb');
 const _ = require('lodash');
 const {authenticate} = require('./middleware/authenticate.js');
 
+
+
 var {User} =  require('./model/User.js');
 var {Todo} = require('./model/Todo.js');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 var app = express();
 app.use(bodyParser.json());
@@ -129,5 +133,3 @@ app.listen(port,(err,success)=>{
     return console.log(err);
     console.log(`Server started successfuly on port ${port}`);
 }) ;
-
-
